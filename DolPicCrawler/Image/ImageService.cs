@@ -11,7 +11,6 @@ namespace DolPicCrawler.Image
     {
         private static readonly ImageService _imageService;
         private readonly string image_insert_url = ConfigurationManager.AppSettings["dolpicImageInsertUrl"].ToString();
-        private readonly string image_delete_url = ConfigurationManager.AppSettings["dolpicImageDeleteUrl"].ToString();
         /// <summary>
         /// static 초기화
         /// </summary>
@@ -58,23 +57,6 @@ namespace DolPicCrawler.Image
                         Console.WriteLine("ImageSrc == " + sBase64);
                     }
                 }
-            }
-        }
-        #endregion
-
-        #region 이미지 삭제하기
-        /// <summary>
-        /// 이미지 저장하고 바로 호출
-        /// </summary>
-        public void ImageDelete()
-        {
-            using (var client = new HttpClient())
-            {
-                client.DefaultRequestHeaders.ExpectContinue = false;
-                var result = client.PostAsync(image_delete_url,
-                new
-                {
-                }, new JsonMediaTypeFormatter()).Result;
             }
         }
         #endregion

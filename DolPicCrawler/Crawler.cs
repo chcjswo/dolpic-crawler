@@ -171,23 +171,6 @@ namespace DolPicCrawler
         }
 
         /// <summary>
-        /// 이미지 삭제
-        /// </summary>
-        private void ImageDelete()
-        {
-            // 시간 측정 시작
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-
-            // 이미지 삭제 호출
-            ImageService.getInstance.ImageDelete();
-
-            // 시간 측정 끝
-            sw.Stop();
-            txtLog.AppendText((sw.ElapsedMilliseconds / 1000.0F).ToString() + " 초 로딩");
-        }
-
-        /// <summary>
         /// 각 사이트별 처리
         /// </summary>
         /// <param name="a_nTagUrlType">사이트 타입 1:트위터 2:인스타그램 3:페이스북</param>
