@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Windows.Forms;
 
 namespace DolPicCrawler
@@ -38,9 +39,9 @@ namespace DolPicCrawler
         private List<HashTags> _listHashTags;
 
         /// <summary>
-        /// json 파일 경로
+        /// json 가져오는 api
         /// </summary>
-        protected readonly string json_url = ConfigurationManager.AppSettings["jsonUrl"].ToString();
+        protected readonly string hahsTagJsonApi = ConfigurationManager.AppSettings["hahsTagJsonApi"].ToString();
 
         /// <summary>
         /// 생성자
@@ -100,8 +101,20 @@ namespace DolPicCrawler
         {
             using (var httpClient = new HttpClient())
             {
-                var response = httpClient.GetAsync(string.Format("{0}", json_url)).Result;
+
+                var response = httpClient.PostAsync(hahsTagJsonApi,
+                new
+                {
+                }, new JsonMediaTypeFormatter()).Result;
+
+                //var response = httpClient.PostAsJsonAsync<(string.Format("{0}", hahsTagJsonApi)).Result;
                 var contents = response.Content.ReadAsStringAsync().Result;
+
+                List<Job> model = null;
+
+                model = JsonConvert.DeserializeObject<List<Job>>(contents);
+
+
 
                 return contents;
             }
