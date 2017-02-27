@@ -36,7 +36,7 @@ namespace DolPicCrawler
         /// <summary>
         /// 해쉬태그 리스트
         /// </summary>
-        private List<HashTags> _listHashTags;
+        private List<HashTagData> _listHashTags;
 
         /// <summary>
         /// json 가져오는 api
@@ -97,52 +97,21 @@ namespace DolPicCrawler
         /// <summary>
         /// 서버로 부터 json 정보 읽어 오기
         /// </summary>
-        private string JsonDataLoadByServer()
+        private void JsonDataLoadByServer()
         {
             using (var httpClient = new HttpClient())
             {
-
                 var response = httpClient.PostAsync(hahsTagJsonApi,
                 new
                 {
                 }, new JsonMediaTypeFormatter()).Result;
 
-                //var response = httpClient.PostAsJsonAsync<(string.Format("{0}", hahsTagJsonApi)).Result;
                 var contents = response.Content.ReadAsStringAsync().Result;
-
-                List<Job> model = null;
-
-                model = JsonConvert.DeserializeObject<List<Job>>(contents);
-
-
-
-                return contents;
+                txtLog.AppendText(contents);
+                _listHashTags = JsonConvert.DeserializeObject<List<HashTagData>>(contents);
             }
         }
 
-        /// <summary>
-        /// json파싱 해서 해쉬태그 만들기
-        /// </summary>
-        /// <param name="json"></param>
-        private void ParseJsonAndMakeHashTagList(string json)
-        {
-            _listHashTags = new List<HashTags>();
-            var list = (JArray)JsonConvert.DeserializeObject(json);
-
-            foreach (JObject itemObj in list)
-            {
-                HashTags hashTags = new HashTags();
-                hashTags.hashTagIndex = itemObj["_id"].ToString();
-                hashTags.twitterHashTag = itemObj["twitterHashTag"].ToString();
-                hashTags.instaHashTag = itemObj["instagramHashTag"].ToString();
-                _listHashTags.Add(hashTags);
-            }
-
-            txtLog.AppendText("JSON 로딩 완료");
-            txtLog.AppendText(Environment.NewLine);
-            txtLog.AppendText("이미지 크롤링중.........");
-            txtLog.AppendText(Environment.NewLine);
-        }
         #endregion
 
         /// <summary>
@@ -153,8 +122,7 @@ namespace DolPicCrawler
             txtLog.Clear();
 
             // 일단 json 로딩
-            var jsonData = JsonDataLoadByServer();
-            ParseJsonAndMakeHashTagList(jsonData);
+            JsonDataLoadByServer();
 
             // 시간 측정 시작
             Stopwatch sw = new Stopwatch();
@@ -411,7 +379,6 @@ namespace DolPicCrawler
             }
         }
 
-
         /// <summary>
         /// json 정보 읽기
         /// </summary>
@@ -426,8 +393,7 @@ namespace DolPicCrawler
 
             try
             {
-                var jsonData = JsonDataLoadByServer();
-                ParseJsonAndMakeHashTagList(jsonData);
+                JsonDataLoadByServer();
             }
             catch (Exception ex)
             {

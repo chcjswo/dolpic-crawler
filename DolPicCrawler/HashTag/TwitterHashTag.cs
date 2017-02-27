@@ -15,7 +15,7 @@ namespace DolPicCrawler.HashTag
         /// <param name="a_listHashTag">해쉬태그 고유번호</param>
         /// <param name="a_listTwitterHashTag">해쉬태그</param>
         /// <param name="a_dImage">이미지 정보 Dictionary</param>
-        public override void ImageSrcSearch(List<HashTags> a_listHashTag, ref Dictionary<string, List<string>> a_dImage)
+        public override void ImageSrcSearch(List<HashTagData> a_listHashTag, ref Dictionary<string, List<string>> a_dImage)
         {
             // 해쉬 태그대로 검색
             foreach (var tag in a_listHashTag)

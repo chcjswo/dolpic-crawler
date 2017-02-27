@@ -20,7 +20,7 @@ namespace DolPicCrawler.HashTag
         /// </summary>
         /// <param name="listHashTag">해쉬태그 리스트</param>
         /// <param name="a_dImage">이미지 정보 Dictionary</param>
-        public abstract void ImageSrcSearch(List<HashTags> listHashTag, ref Dictionary<string, List<string>> a_dImage);
+        public abstract void ImageSrcSearch(List<HashTagData> listHashTag, ref Dictionary<string, List<string>> a_dImage);
 
         /// <summary>
         /// 객체 생성 팩토리 클래스
