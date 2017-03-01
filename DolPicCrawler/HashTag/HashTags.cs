@@ -12,7 +12,7 @@ namespace DolPicCrawler.HashTag
         [JsonProperty("twitterHashTag")]
         public string twitterHashTag;
 
-        [JsonProperty("instaHashTag")]
+        [JsonProperty("instagramHashTag")]
         public string instaHashTag;
     }
 }

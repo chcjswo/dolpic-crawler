@@ -2,12 +2,10 @@
 using DolPicCrawler.Image;
 using log4net;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Formatting;
@@ -368,9 +366,6 @@ namespace DolPicCrawler
             {
                 // 이미지 가져오기
                 ImageGet();
-                // 짤린 이미지 삭제
-                //ImageDelete();
-
             }
             catch (Exception ex)
             {

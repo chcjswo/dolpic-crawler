@@ -22,16 +22,10 @@ namespace DolPicCrawler.HashTag
             {
                 var content = "";
 
-                using (var client = new HttpClient())
+                using (var httpClient = new HttpClient())
                 {
-                    HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, string.Format(CON_IMAGE_URL, tag.twitterHashTag));
-                    var task = client.SendAsync(request).ContinueWith(responseTask =>
-                    {
-                        content = responseTask.Result.Content.ReadAsStringAsync().Result;
-                    });
-
-                    task.Wait();
-
+                    var response = httpClient.GetAsync(string.Format(CON_IMAGE_URL, tag.twitterHashTag)).Result;
+                    content = response.Content.ReadAsStringAsync().Result;
                     // 결과물에서 이미지 URL 추출
                     ImageSearch(content, tag.hashTagIndex, ref a_dImage, CON_MATCH_TAG, false);
                 }
