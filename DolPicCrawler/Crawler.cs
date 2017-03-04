@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Formatting;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DolPicCrawler
@@ -115,7 +116,7 @@ namespace DolPicCrawler
         /// <summary>
         /// 이미지 정보 가져오기
         /// </summary>
-        private void ImageGet()
+        private async void ImageGet()
         {
             txtLog.Clear();
 
@@ -128,16 +129,21 @@ namespace DolPicCrawler
 
             for (var nTagUrlType = 1; nTagUrlType < 3; nTagUrlType++)
             {
-                // 이미지 처리
-                ImageProc(nTagUrlType);
+                var task = Task<int>.Run(() => ImageProc(nTagUrlType));
 
-                txtLog.AppendText("크롤링 완료");
-                txtLog.AppendText(Environment.NewLine);
-                txtLog.AppendText("이미지 전송중....");
-                txtLog.AppendText(Environment.NewLine);
+                await task.ContinueWith(x => {
+                    txtLog.AppendText("크롤링 완료");
+                    txtLog.AppendText(Environment.NewLine);
+                    txtLog.AppendText("이미지 전송중....");
+                    txtLog.AppendText(Environment.NewLine);
 
-                // 해당 사이트로 부터 이미지정보를 가져오고 이미지 저장
-                ImageService.getInstance.ImageSend(_dImage, nTagUrlType);
+                    // 그리드 그리기
+                    SetGridInfo(nTagUrlType);
+
+                    // 해당 사이트로 부터 이미지정보를 가져오고 이미지 저장
+                    ImageService.getInstance.ImageSend(_dImage, nTagUrlType);
+                }, TaskScheduler.FromCurrentSynchronizationContext());
+
 
                 txtLog.AppendText("이미지 전송 완료");
                 txtLog.AppendText(Environment.NewLine);
@@ -176,9 +182,6 @@ namespace DolPicCrawler
                 default:
                     break;
             }
-
-            // 그리드 그리기
-            SetGridInfo(a_nTagUrlType);
         }
 
         /// <summary>

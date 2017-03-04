@@ -20,12 +20,11 @@ namespace DolPicCrawler.HashTag
             // 해쉬 태그대로 검색
             foreach (var tag in a_listHashTag)
             {
-                var content = "";
 
                 using (var httpClient = new HttpClient())
                 {
                     var response = httpClient.GetAsync(string.Format(CON_IMAGE_URL, tag.twitterHashTag)).Result;
-                    content = response.Content.ReadAsStringAsync().Result;
+                    var content = response.Content.ReadAsStringAsync().Result;
                     // 결과물에서 이미지 URL 추출
                     ImageSearch(content, tag.hashTagIndex, ref a_dImage, CON_MATCH_TAG, false);
                 }
