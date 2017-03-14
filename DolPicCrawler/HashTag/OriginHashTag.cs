@@ -20,7 +20,12 @@ namespace DolPicCrawler.HashTag
         /// </summary>
         /// <param name="listHashTag">해쉬태그 리스트</param>
         /// <param name="a_dImage">이미지 정보 Dictionary</param>
-        public abstract void ImageSrcSearch(List<HashTagData> listHashTag, ref Dictionary<string, List<string>> a_dImage);
+        /// <param name="a_dCaption">내용 정보 Dictionary</param>
+        public abstract void ImageSrcSearch(
+                List<HashTagData> a_listHashTag,
+                ref Dictionary<string, List<string>> a_dImage,
+                ref Dictionary<string, List<string>> a_dCaption
+            );
 
         /// <summary>
         /// 객체 생성 팩토리 클래스
@@ -48,10 +53,24 @@ namespace DolPicCrawler.HashTag
         /// 이미지 찾기
         /// </summary>
         /// <param name="resString">결과 스트링</param>
-        public void ImageSearch(string resString, string a_sTagIndex, ref Dictionary<string, List<string>> a_dImage, string a_match_tag, bool isReplace)
+        /// <param name="a_sTagIndex"></param>
+        /// <param name="a_dImage"></param>
+        /// <param name="a_dCaption"></param>
+        /// <param name="a_image_match_tag"></param>
+        /// <param name="a_caption_match_tag"></param>
+        /// <param name="isReplace"></param>
+        public void ImageSearch(
+                string resString,
+                string a_sTagIndex,
+                ref Dictionary<string, List<string>> a_dImage,
+                ref Dictionary<string, List<string>> a_dCaption,
+                string a_image_match_tag,
+                string a_caption_match_tag,
+                bool isReplace
+            )
         {
             // 이미지 찾기
-            Regex re = new Regex(a_match_tag, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+            Regex re = new Regex(a_image_match_tag, RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
             List<string> ltImg = new List<string>();
 
