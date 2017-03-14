@@ -23,6 +23,8 @@ namespace DolPicCrawler
         private ErrFrm errfrm;
         private List<string[]> _arrTxt;
 
+        private string[] arrSiteName = { "트위터", "인스타그램", "페이스북" };
+
         /// <summary>
         /// 서버에 전송될 이미지 경로가 담길 Dictionary
         /// </summary>
@@ -132,9 +134,10 @@ namespace DolPicCrawler
                 var task = Task<int>.Run(() => ImageProc(nTagUrlType));
 
                 await task.ContinueWith(x => {
-                    txtLog.AppendText("크롤링 완료");
                     txtLog.AppendText(Environment.NewLine);
-                    txtLog.AppendText("이미지 전송중....");
+                    txtLog.AppendText(arrSiteName[nTagUrlType] + " 크롤링 완료");
+                    txtLog.AppendText(Environment.NewLine);
+                    txtLog.AppendText(arrSiteName[nTagUrlType] + " 이미지 전송중....");
                     txtLog.AppendText(Environment.NewLine);
 
                     // 그리드 그리기
@@ -144,8 +147,7 @@ namespace DolPicCrawler
                     ImageService.getInstance.ImageSend(_dImage, nTagUrlType);
                 }, TaskScheduler.FromCurrentSynchronizationContext());
 
-
-                txtLog.AppendText("이미지 전송 완료");
+                txtLog.AppendText(arrSiteName[nTagUrlType] + " 이미지 전송 완료");
                 txtLog.AppendText(Environment.NewLine);
             }
 

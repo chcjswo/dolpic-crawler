@@ -88,7 +88,6 @@
             // btnAuthCheck
             // 
             this.btnAuthCheck.BackColor = System.Drawing.SystemColors.Info;
-            this.btnAuthCheck.Enabled = false;
             this.btnAuthCheck.Location = new System.Drawing.Point(710, 12);
             this.btnAuthCheck.Name = "btnAuthCheck";
             this.btnAuthCheck.Size = new System.Drawing.Size(119, 34);
