@@ -69,22 +69,32 @@ namespace DolPicCrawler.HashTag
                 bool isReplace
             )
         {
+            // 이미지 Dictionary 저장
+            a_dImage.Add(a_sTagIndex, GetMatchString(resString, a_image_match_tag, isReplace, "ImageSrc"));
+        }
+
+        private List<string> GetMatchString(
+                string resString,
+                string a_match_tag,
+                bool isReplace,
+                string a_match_string
+            )
+        {
             // 이미지 찾기
-            Regex re = new Regex(a_image_match_tag, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+            Regex re = new Regex(a_match_tag, RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
             List<string> ltImg = new List<string>();
 
             for (Match m = re.Match(resString); m.Success; m = m.NextMatch())
             {
-                string sImageSrc = m.Groups["ImageSrc"].Value;
+                string sImageSrc = m.Groups[a_match_string].Value;
                 if (isReplace)
                     ltImg.Add(sImageSrc.Replace("\\", ""));
                 else
                     ltImg.Add(sImageSrc);
             }
 
-            // Dictionary 저장
-            a_dImage.Add(a_sTagIndex, ltImg);
+            return ltImg;
         }
     }
 }

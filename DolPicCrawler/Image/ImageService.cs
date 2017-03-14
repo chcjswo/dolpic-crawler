@@ -32,8 +32,13 @@ namespace DolPicCrawler.Image
         /// 이미지 저장하기
         /// </summary>
         /// <param name="a_dImage">저장할 이미지 정보 Dictionary</param>
+        /// <param name="a_dCaption">저장할 내용 정보 Dictionary</param>
         /// <param name="a_nTagUrlType">사이트 타입 1:트위터 2:인스타그램 3:페이스북</param>
-        public async void ImageSend(Dictionary<string, List<string>> a_dImage, int a_nTagUrlType)
+        public async void ImageSend(
+                Dictionary<string, List<string>> a_dImage,
+                Dictionary<string, List<string>> a_dCaption,
+                int a_nTagUrlType
+            )
         {
             using (var client = new HttpClient())
             {

@@ -151,7 +151,7 @@ namespace DolPicCrawler
                     SetGridInfo(nTagUrlType);
 
                     // 해당 사이트로 부터 이미지정보를 가져오고 이미지 저장
-                    ImageService.getInstance.ImageSend(_dImage, nTagUrlType);
+                    ImageService.getInstance.ImageSend(_dImage, _dCaption, nTagUrlType);
                 }, TaskScheduler.FromCurrentSynchronizationContext());
 
                 txtLog.AppendText(arrSiteName[nTagUrlType] + " 이미지 전송 완료");
