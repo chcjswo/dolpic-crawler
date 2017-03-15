@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using DolPicCrawler.Utils;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 
@@ -7,8 +8,8 @@ namespace DolPicCrawler.HashTag
     public class InstagramHashTag : OriginHashTag
     {
         private const string CON_IMAGE_URL = "https://instagram.com/{0}";
-        private const string CON_IMAGE_MATCH_TAG = "\"display_src\": \"(?<ImageSrc>.*?)\".*?";
-        private const string CON_CAPTION_MATCH_TAG = "\"caption\": \"(?<captionDesc>.*?)\".*?";
+        private const string CON_IMAGE_MATCH_TAG = "\"display_src\": \"(?<" + CommonConst.IMAGE_MATCH_STRING + ">.*?)\".*?";
+        private const string CON_CAPTION_MATCH_TAG = "\"caption\": \"(?<" + CommonConst.CAPTION_MATCH_STRING + ">.*?)\".*?";
 
         /// <summary>
         /// 해당 사이트에서 이미지 경로 추출
@@ -18,8 +19,8 @@ namespace DolPicCrawler.HashTag
         /// <param name="a_dCaption">내용 정보 Dictionary</param>
         public override void ImageSrcSearch(
                 List<HashTagData> a_listHashTag,
-                ref Dictionary<string, List<string>> a_dImage,
-                ref Dictionary<string, List<string>> a_dCaption
+                ref Dictionary<string, HashTagQueryData> a_dImage,
+                ref Dictionary<string, HashTagQueryData> a_dCaption
             )
         {
             var list = a_listHashTag.Where(c => c.instaHashTag != "");

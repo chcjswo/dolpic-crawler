@@ -155,6 +155,7 @@
     <Compile Include="HashTag\OriginHashTag.cs" />
     <Compile Include="HashTag\TwitterHashTag.cs" />
     <Compile Include="HashTag\InstagramHashTag.cs" />
+    <Compile Include="Utils\CommonConst.cs" />
     <Compile Include="Utils\CommonUtils.cs" />
     <EmbeddedResource Include="Crawler.resx">
       <DependentUpon>Crawler.cs</DependentUpon>

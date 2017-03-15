@@ -29,11 +29,11 @@ namespace DolPicCrawler
         /// <summary>
         /// 서버에 전송될 이미지 경로가 담길 Dictionary
         /// </summary>
-        private Dictionary<string, List<string>> _dImage;
+        private Dictionary<string, HashTagQueryData> _dImage;
         /// <summary>
         /// 서버에 전송될 내용 경로가 담길 Dictionary
         /// </summary>
-        private Dictionary<string, List<string>> _dCaption;
+        private Dictionary<string, HashTagQueryData> _dCaption;
         /// <summary>
         /// 카운트다운 변수
         /// </summary>
@@ -61,7 +61,7 @@ namespace DolPicCrawler
             txtLog.AppendText(version.ToString() + Environment.NewLine);
             txtLog.AppendText(Application.StartupPath + Environment.NewLine);
 
-            txtLog.AppendText(CommonUtils.getUnicodeToString("\uba38\ub9ac\ud588\uae14. \uace0\ub3d9 \ud68c\uc0c9 \ubcf4\ub77c \ub290\ub08c \uc624\ubb18 \ud55c\ub370 \ud68c\uba74\uc5d0 \uc798 \uc548\uc7a1\ud788\ub124 \uc5b4\ub461\uac8c \ucc0d\uc74c \ub108\ubb34 \uc5b4\ub461\uac8c \ucc0d\ud788\uace0 \ubc1d\uc740\ub370\uc11c \ucc0d\uc74c \ub108\ubb34 \ubc1d\uc544\ubd48\uace0 \uc6d4\ub798 \ud558\ub824\ub358 \uba38\ub9ac\ub294 \ud1f4\uc9dc \ub9de\uc558\uc9c0\ub9cc \ub9d8\uc5d0 \ub9cc\uc871\uc2a4\ub7fd\uac8c \ub098\uc654\uc73c\ub2c8 \uc140\uce74 \ub9ce\uc774 \ub0a8\uaca8\uc57c\uaca0\uad70 \ud83d\ude3d\ud83d\udc83\ud83c\udffc\u2b50\ud83c\udf19\n#\uc77c\uc0c1#\uc778\uc2a4\ud0c0\uc77c\uc0c1#\uc140\uce74#\uc140\uc2a4\ud0c0\uadf8\ub7a8#\uc140\uae30\uafbc#\uba38\ub9ac\uc2a4\ud0c0\uc77c #\uc5fc\uc0c9#selfie"));
+            txtLog.AppendText(CommonUtils.getUnicodeToString("\uc6b0\ub9ac\uc560\uae30\ub294 \uc719\ud06c\ubc15\uc0ac\uc9c0"));
         }
 
         #region Init
@@ -138,6 +138,7 @@ namespace DolPicCrawler
 
             for (var nTagUrlType = 1; nTagUrlType < 3; nTagUrlType++)
             {
+                if (nTagUrlType == 1) continue;
                 var task = Task<int>.Run(() => ImageProc(nTagUrlType));
 
                 await task.ContinueWith(x => {
@@ -171,7 +172,7 @@ namespace DolPicCrawler
         private void ImageProc(int a_nTagUrlType)
         {
             // Dictionary 초기화
-            _dImage = new Dictionary<string, List<string>>();
+            _dImage = new Dictionary<string, HashTagQueryData>();
 
             switch (a_nTagUrlType)
             {
@@ -199,7 +200,7 @@ namespace DolPicCrawler
         /// <param name="a_nTagUrlType">사이트 타입 1:트위터 2:인스타그램 3:페이스북</param>
         private void SetGridInfo(int a_nTagUrlType)
         {
-            foreach (KeyValuePair<string, List<string>> kvp in _dImage)
+            foreach (KeyValuePair<string, HashTagQueryData> kvp in _dImage)
             {
                 var tag = _listHashTags.Where(c => c.hashTagIndex.Equals(kvp.Key))
                                         .Select(m => new { m.twitterHashTag, m.instaHashTag });
@@ -210,9 +211,9 @@ namespace DolPicCrawler
 
 
                 txtLog.AppendText(string.Format("태그 index == {0} / 태그 이름 == {2} / count == {1}",
-                                kvp.Key, kvp.Value.Count, tagName) + Environment.NewLine);
+                                kvp.Key, kvp.Value.imageSrc.Count, tagName) + Environment.NewLine);
 
-                foreach (var item in kvp.Value)
+                foreach (var item in kvp.Value.imageSrc)
                 {
                     string[] arrApp = new string[3];
 

@@ -15,4 +15,11 @@ namespace DolPicCrawler.HashTag
         [JsonProperty("instagramHashTag")]
         public string instaHashTag;
     }
+
+    public class HashTagQueryData
+    {
+        public List<string> imageSrc;
+
+        public List<string> captionString;
+    }
 }
