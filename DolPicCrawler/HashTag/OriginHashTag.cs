@@ -52,18 +52,17 @@ namespace DolPicCrawler.HashTag
         /// 이미지 찾기
         /// </summary>
         /// <param name="resString">결과 스트링</param>
-        /// <param name="a_sTagIndex"></param>
-        /// <param name="a_dImage"></param>
-        /// <param name="a_dCaption"></param>
-        /// <param name="a_image_match_tag"></param>
-        /// <param name="a_caption_match_tag"></param>
+        /// <param name="a_sTagIndex">해쉬태그 고유번호</param>
+        /// <param name="a_dicHashTagData"></param>
+        /// <param name="a_image_tag"></param>
+        /// <param name="a_caption_tag"></param>
         /// <param name="isReplace"></param>
         public void ImageSearch(
                 string resString,
                 string a_sTagIndex,
                 ref Dictionary<string, HashTagQueryData> a_dicHashTagData,
-                string a_image_match_tag,
-                string a_caption_match_tag,
+                string a_image_tag,
+                string a_caption_tag,
                 bool isReplace
             )
         {
@@ -72,10 +71,10 @@ namespace DolPicCrawler.HashTag
                 a_sTagIndex,
                 GetMatchString(
                     resString,
-                    a_image_match_tag,
                     isReplace,
+                    a_image_tag,
                     CommonConst.IMAGE_MATCH_STRING,
-                    a_caption_match_tag,
+                    a_caption_tag,
                     CommonConst.CAPTION_MATCH_STRING
                 )
             );
@@ -83,36 +82,36 @@ namespace DolPicCrawler.HashTag
 
         private HashTagQueryData GetMatchString(
                 string resString,
-                string a_match_tag,
                 bool isReplace,
-                string a_match_string,
-                string a_caption_match_tag,
-                string caption_match_string
+                string a_image_tag,
+                string a_image_match_string,
+                string a_caption_tag,
+                string a_caption_match_string
             )
         {
             HashTagQueryData hashTagQueryData = new HashTagQueryData();
 
             // 이미지 찾기
-            Regex re = new Regex(a_match_tag, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+            Regex re = new Regex(a_image_tag, RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
             hashTagQueryData.listImageSrc = new List<string>();
 
             for (Match m = re.Match(resString); m.Success; m = m.NextMatch())
             {
-                var sImageSrc = m.Groups[a_match_string].Value;
+                var sImageSrc = m.Groups[a_image_match_string].Value;
                 if (isReplace)
                     hashTagQueryData.listImageSrc.Add(sImageSrc.Replace("\\", ""));
                 else
                     hashTagQueryData.listImageSrc.Add(sImageSrc);
             }
 
-            re = new Regex(a_caption_match_tag, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+            re = new Regex(a_caption_tag, RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
             hashTagQueryData.listCaptionString = new List<string>();
 
             for (Match m = re.Match(resString); m.Success; m = m.NextMatch())
             {
-                var sImageSrc = m.Groups[caption_match_string].Value;
+                var sImageSrc = m.Groups[a_caption_match_string].Value;
                 hashTagQueryData.listCaptionString.Add(sImageSrc);
             }
 

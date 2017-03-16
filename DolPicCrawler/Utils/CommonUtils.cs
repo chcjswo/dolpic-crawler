@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace DolPicCrawler.Utils
 {
@@ -17,7 +18,11 @@ namespace DolPicCrawler.Utils
             if (string.IsNullOrEmpty(strs)) return "";
 
             Encoding target = Encoding.UTF8;
-            byte[] bytes = target.GetBytes(strs);
+            byte[] bytes = target.GetBytes(strs.Replace("\\", @"\"));
+
+            var tt = target.GetString(bytes);
+
+            Console.WriteLine(tt);
 
             return target.GetString(bytes);
         }

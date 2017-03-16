@@ -50,6 +50,9 @@ namespace DolPicCrawler.Image
                     //KeyValuePair<string, List<string>> kvp = a_dImage[i];
 
                     //foreach (var item in kvp.Value.imageSrc)
+
+                    var captionCount = kvp.Value.listCaptionString.Count;
+
                     for (var i=0; i<kvp.Value.listImageSrc.Count; i++)
                     {
                         // Bsee64 인코딩
@@ -64,9 +67,15 @@ namespace DolPicCrawler.Image
                         Console.WriteLine("url == " + string.Format(image_insert_url, kvp.Key, sBase64, a_nTagUrlType, 1));
                         Console.WriteLine("TagNo == " + kvp.Key);
                         Console.WriteLine("ImageSrc == " + sBase64);
-                        Console.WriteLine("caption == " + (kvp.Value.listCaptionString[i]));
-                        Console.WriteLine("caption == " + CommonUtils.getUnicodeToString(kvp.Value.listCaptionString[i]));
+                        if (captionCount > i)
+                        {
+                            Console.WriteLine("caption == " + (kvp.Value.listCaptionString[i]));
+                            Console.WriteLine("caption == " + CommonUtils.getUnicodeToString(kvp.Value.listCaptionString[i]));
+                        }
                         Console.WriteLine("result == " + result.Content.ReadAsStringAsync().Result);
+
+                        Console.WriteLine("listImagsrc count === " + kvp.Value.listImageSrc.Count);
+                        Console.WriteLine("listCaptionString count === " + kvp.Value.listCaptionString.Count);
                     }
                 }
             }
