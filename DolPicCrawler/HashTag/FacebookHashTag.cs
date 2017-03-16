@@ -13,8 +13,7 @@ namespace DolPicCrawler.HashTag
         /// <param name="a_dCaption">내용 정보 Dictionary</param>
         public override void ImageSrcSearch(
                 List<HashTagData> a_listHashTag,
-                ref Dictionary<string, HashTagQueryData> a_dImage,
-                ref Dictionary<string, HashTagQueryData> a_dCaption
+                ref Dictionary<string, HashTagQueryData> a_dicHashTagData
             )
         {
         }

@@ -19,8 +19,7 @@ namespace DolPicCrawler.HashTag
         /// <param name="a_dCaption">내용 정보 Dictionary</param>
         public override void ImageSrcSearch(
                 List<HashTagData> a_listHashTag,
-                ref Dictionary<string, HashTagQueryData> a_dImage,
-                ref Dictionary<string, HashTagQueryData> a_dCaption
+                ref Dictionary<string, HashTagQueryData> a_dicHashTagData
             )
         {
             var list = a_listHashTag.Where(c => c.instaHashTag != "");
@@ -33,7 +32,7 @@ namespace DolPicCrawler.HashTag
                     var response = httpClient.GetAsync(string.Format(CON_IMAGE_URL, tag.instaHashTag)).Result;
                     var content = response.Content.ReadAsStringAsync().Result;
                     // 결과물에서 이미지 URL 추출
-                    ImageSearch(content, tag.hashTagIndex, ref a_dImage, ref a_dCaption, CON_IMAGE_MATCH_TAG, CON_CAPTION_MATCH_TAG, false);
+                    ImageSearch(content, tag.hashTagIndex, ref a_dicHashTagData, CON_IMAGE_MATCH_TAG, CON_CAPTION_MATCH_TAG, false);
                 }
             }
         }

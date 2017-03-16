@@ -21,11 +21,9 @@ namespace DolPicCrawler.HashTag
         /// </summary>
         /// <param name="listHashTag">해쉬태그 리스트</param>
         /// <param name="a_dImage">이미지 정보 Dictionary</param>
-        /// <param name="a_dCaption">내용 정보 Dictionary</param>
         public abstract void ImageSrcSearch(
                 List<HashTagData> a_listHashTag,
-                ref Dictionary<string, HashTagQueryData> a_dImage,
-                ref Dictionary<string, HashTagQueryData> a_dCaption
+                ref Dictionary<string, HashTagQueryData> a_dicHashTagData
             );
 
         /// <summary>
@@ -63,17 +61,24 @@ namespace DolPicCrawler.HashTag
         public void ImageSearch(
                 string resString,
                 string a_sTagIndex,
-                ref Dictionary<string, HashTagQueryData> a_dImage,
-                ref Dictionary<string, HashTagQueryData> a_dCaption,
+                ref Dictionary<string, HashTagQueryData> a_dicHashTagData,
                 string a_image_match_tag,
                 string a_caption_match_tag,
                 bool isReplace
             )
         {
-            // 이미지 Dictionary 저장
-            a_dImage.Add(a_sTagIndex, GetMatchString(resString, a_image_match_tag, isReplace, CommonConst.IMAGE_MATCH_STRING, a_caption_match_tag, CommonConst.CAPTION_MATCH_STRING));
-            // 내용 Dictionary 저장
-            //a_dCaption.Add(a_sTagIndex, GetMatchString(resString, a_caption_match_tag, isReplace, CommonConst.IMAGE_MATCH_STRING));
+            // Dictionary 저장
+            a_dicHashTagData.Add(
+                a_sTagIndex,
+                GetMatchString(
+                    resString,
+                    a_image_match_tag,
+                    isReplace,
+                    CommonConst.IMAGE_MATCH_STRING,
+                    a_caption_match_tag,
+                    CommonConst.CAPTION_MATCH_STRING
+                )
+            );
         }
 
         private HashTagQueryData GetMatchString(
@@ -90,25 +95,25 @@ namespace DolPicCrawler.HashTag
             // 이미지 찾기
             Regex re = new Regex(a_match_tag, RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
-            hashTagQueryData.imageSrc = new List<string>();
+            hashTagQueryData.listImageSrc = new List<string>();
 
             for (Match m = re.Match(resString); m.Success; m = m.NextMatch())
             {
                 var sImageSrc = m.Groups[a_match_string].Value;
                 if (isReplace)
-                    hashTagQueryData.imageSrc.Add(sImageSrc.Replace("\\", ""));
+                    hashTagQueryData.listImageSrc.Add(sImageSrc.Replace("\\", ""));
                 else
-                    hashTagQueryData.imageSrc.Add(sImageSrc);
+                    hashTagQueryData.listImageSrc.Add(sImageSrc);
             }
 
             re = new Regex(a_caption_match_tag, RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
-            hashTagQueryData.captionString = new List<string>();
+            hashTagQueryData.listCaptionString = new List<string>();
 
             for (Match m = re.Match(resString); m.Success; m = m.NextMatch())
             {
                 var sImageSrc = m.Groups[caption_match_string].Value;
-                hashTagQueryData.captionString.Add(sImageSrc);
+                hashTagQueryData.listCaptionString.Add(sImageSrc);
             }
 
             return hashTagQueryData;

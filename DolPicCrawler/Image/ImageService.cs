@@ -35,27 +35,25 @@ namespace DolPicCrawler.Image
         /// <summary>
         /// 이미지 저장하기
         /// </summary>
-        /// <param name="a_dImage">저장할 이미지 정보 Dictionary</param>
-        /// <param name="a_dCaption">저장할 내용 정보 Dictionary</param>
+        /// <param name="a_dImage">저장할 이미지 정보/이미지 내용 Dictionary</param>
         /// <param name="a_nTagUrlType">사이트 타입 1:트위터 2:인스타그램 3:페이스북</param>
         public async void ImageSend(
-                Dictionary<string, HashTagQueryData> a_dImage,
-                Dictionary<string, HashTagQueryData> a_dCaption,
+                Dictionary<string, HashTagQueryData> a_dicHashTagData,
                 int a_nTagUrlType
             )
         {
             using (var client = new HttpClient())
             {
-                foreach (KeyValuePair<string, HashTagQueryData> kvp in a_dImage)
+                foreach (KeyValuePair<string, HashTagQueryData> kvp in a_dicHashTagData)
                 //for (int i = 0; i < a_dImage.Count; i++)
                 {
                     //KeyValuePair<string, List<string>> kvp = a_dImage[i];
 
                     //foreach (var item in kvp.Value.imageSrc)
-                    for (var i=0; i<kvp.Value.imageSrc.Count; i++)
+                    for (var i=0; i<kvp.Value.listImageSrc.Count; i++)
                     {
                         // Bsee64 인코딩
-                        var sBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(kvp.Value.imageSrc[i]));
+                        var sBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(kvp.Value.listImageSrc[i]));
                         var values = new Dictionary<string, string>();
                         values.Add("hashTagId", kvp.Key);
                         values.Add("urlType", a_nTagUrlType.ToString());
@@ -66,7 +64,8 @@ namespace DolPicCrawler.Image
                         Console.WriteLine("url == " + string.Format(image_insert_url, kvp.Key, sBase64, a_nTagUrlType, 1));
                         Console.WriteLine("TagNo == " + kvp.Key);
                         Console.WriteLine("ImageSrc == " + sBase64);
-                        Console.WriteLine("caption == " + CommonUtils.getUnicodeToString(kvp.Value.captionString[i]));
+                        Console.WriteLine("caption == " + (kvp.Value.listCaptionString[i]));
+                        Console.WriteLine("caption == " + CommonUtils.getUnicodeToString(kvp.Value.listCaptionString[i]));
                         Console.WriteLine("result == " + result.Content.ReadAsStringAsync().Result);
                     }
                 }

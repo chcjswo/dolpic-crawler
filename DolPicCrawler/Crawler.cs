@@ -27,13 +27,9 @@ namespace DolPicCrawler
         private string[] arrSiteName = { "트위터", "인스타그램", "페이스북" };
 
         /// <summary>
-        /// 서버에 전송될 이미지 경로가 담길 Dictionary
+        /// 서버에 전송될 이미지 경로/이미지 내용 Dictionary
         /// </summary>
-        private Dictionary<string, HashTagQueryData> _dImage;
-        /// <summary>
-        /// 서버에 전송될 내용 경로가 담길 Dictionary
-        /// </summary>
-        private Dictionary<string, HashTagQueryData> _dCaption;
+        private Dictionary<string, HashTagQueryData> _dicHashTagData;
         /// <summary>
         /// 카운트다운 변수
         /// </summary>
@@ -61,7 +57,7 @@ namespace DolPicCrawler
             txtLog.AppendText(version.ToString() + Environment.NewLine);
             txtLog.AppendText(Application.StartupPath + Environment.NewLine);
 
-            txtLog.AppendText(CommonUtils.getUnicodeToString("\uc6b0\ub9ac\uc560\uae30\ub294 \uc719\ud06c\ubc15\uc0ac\uc9c0"));
+            txtLog.AppendText(CommonUtils.getUnicodeToString("\ub0a8\uc790\uc600\uc74c \uc778\uae30 \ub9ce\uc558\uc744\ub4ef...\n\ub204\uad6c\ub2ee\uc740\uac70\uac19\uc740\ub370.. \uc544 \ub0b4\ub3d9\uc0dd\uc744 \ub2ee\uc558\uad6c\ub098"));
         }
 
         #region Init
@@ -152,7 +148,7 @@ namespace DolPicCrawler
                     SetGridInfo(nTagUrlType);
 
                     // 해당 사이트로 부터 이미지정보를 가져오고 이미지 저장
-                    ImageService.getInstance.ImageSend(_dImage, _dCaption, nTagUrlType);
+                    ImageService.getInstance.ImageSend(_dicHashTagData, nTagUrlType);
                 }, TaskScheduler.FromCurrentSynchronizationContext());
 
                 txtLog.AppendText(arrSiteName[nTagUrlType] + " 이미지 전송 완료");
@@ -172,18 +168,18 @@ namespace DolPicCrawler
         private void ImageProc(int a_nTagUrlType)
         {
             // Dictionary 초기화
-            _dImage = new Dictionary<string, HashTagQueryData>();
+            _dicHashTagData = new Dictionary<string, HashTagQueryData>();
 
             switch (a_nTagUrlType)
             {
                 case (int)OriginSiteType.twitter:
                     // 트위터 이미지 긁어 오기
-                    OriginHashTag.JsonFactory(OriginSiteType.twitter).ImageSrcSearch(_listHashTags, ref _dImage, ref _dCaption);
+                    OriginHashTag.JsonFactory(OriginSiteType.twitter).ImageSrcSearch(_listHashTags, ref _dicHashTagData);
                     break;
 
                 case (int)OriginSiteType.instagram:
                     // 인스타그램 이미지 긁어 오기
-                    OriginHashTag.JsonFactory(OriginSiteType.instagram).ImageSrcSearch(_listHashTags, ref _dImage, ref _dCaption);
+                    OriginHashTag.JsonFactory(OriginSiteType.instagram).ImageSrcSearch(_listHashTags, ref _dicHashTagData);
                     break;
 
                 case (int)OriginSiteType.facebook:
@@ -200,7 +196,7 @@ namespace DolPicCrawler
         /// <param name="a_nTagUrlType">사이트 타입 1:트위터 2:인스타그램 3:페이스북</param>
         private void SetGridInfo(int a_nTagUrlType)
         {
-            foreach (KeyValuePair<string, HashTagQueryData> kvp in _dImage)
+            foreach (KeyValuePair<string, HashTagQueryData> kvp in _dicHashTagData)
             {
                 var tag = _listHashTags.Where(c => c.hashTagIndex.Equals(kvp.Key))
                                         .Select(m => new { m.twitterHashTag, m.instaHashTag });
@@ -211,9 +207,9 @@ namespace DolPicCrawler
 
 
                 txtLog.AppendText(string.Format("태그 index == {0} / 태그 이름 == {2} / count == {1}",
-                                kvp.Key, kvp.Value.imageSrc.Count, tagName) + Environment.NewLine);
+                                kvp.Key, kvp.Value.listImageSrc.Count, tagName) + Environment.NewLine);
 
-                foreach (var item in kvp.Value.imageSrc)
+                foreach (var item in kvp.Value.listImageSrc)
                 {
                     string[] arrApp = new string[3];
 

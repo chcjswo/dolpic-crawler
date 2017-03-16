@@ -14,6 +14,8 @@ namespace DolPicCrawler.Utils
         /// <returns></returns>
         public static string getUnicodeToString(string strs)
         {
+            if (string.IsNullOrEmpty(strs)) return "";
+
             Encoding target = Encoding.UTF8;
             byte[] bytes = target.GetBytes(strs);
 
