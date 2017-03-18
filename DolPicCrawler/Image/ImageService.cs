@@ -45,37 +45,40 @@ namespace DolPicCrawler.Image
             using (var client = new HttpClient())
             {
                 foreach (KeyValuePair<string, HashTagQueryData> kvp in a_dicHashTagData)
-                //for (int i = 0; i < a_dImage.Count; i++)
                 {
-                    //KeyValuePair<string, List<string>> kvp = a_dImage[i];
-
-                    //foreach (var item in kvp.Value.imageSrc)
-
                     var captionCount = kvp.Value.listCaptionString.Count;
 
                     for (var i=0; i<kvp.Value.listImageSrc.Count; i++)
                     {
-                        // Bsee64 인코딩
-                        var sBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(kvp.Value.listImageSrc[i]));
+                        // 이미지 Bsee64 인코딩
+                        var imageBase64 = CommonUtils.getStringToBase64(kvp.Value.listImageSrc[i]);
                         var values = new Dictionary<string, string>();
                         values.Add("hashTagId", kvp.Key);
                         values.Add("urlType", a_nTagUrlType.ToString());
-                        values.Add("imageUrl", sBase64);
+                        values.Add("imageUrl", imageBase64);
+
+                        Console.WriteLine("url == " + string.Format(image_insert_url, kvp.Key, imageBase64, a_nTagUrlType, 1));
+                        Console.WriteLine("TagNo == " + kvp.Key);
+                        Console.WriteLine("ImageSrc == " + imageBase64);
+
+                        if (captionCount > i)
+                        {
+                            var caption = CommonUtils.DecodeEncodedNonAsciiCharacters(
+                                CommonUtils.DecodeEncodedNonAsciiCharacters(kvp.Value.listCaptionString[i])
+                            );
+                            Console.WriteLine("caption ========== " + caption);
+
+
+                            var captionBase64 = CommonUtils.getStringToBase64(caption);
+                            values.Add("cpation", captionBase64);
+
+                            Console.WriteLine("caption base64 == " + captionBase64);
+                        }
+
                         var content = new FormUrlEncodedContent(values);
                         var result = await client.PostAsync(image_insert_url, content);
 
-                        Console.WriteLine("url == " + string.Format(image_insert_url, kvp.Key, sBase64, a_nTagUrlType, 1));
-                        Console.WriteLine("TagNo == " + kvp.Key);
-                        Console.WriteLine("ImageSrc == " + sBase64);
-                        if (captionCount > i)
-                        {
-                            Console.WriteLine("caption == " + (kvp.Value.listCaptionString[i]));
-                            Console.WriteLine("caption == " + CommonUtils.getUnicodeToString(kvp.Value.listCaptionString[i]));
-                        }
                         Console.WriteLine("result == " + result.Content.ReadAsStringAsync().Result);
-
-                        Console.WriteLine("listImagsrc count === " + kvp.Value.listImageSrc.Count);
-                        Console.WriteLine("listCaptionString count === " + kvp.Value.listCaptionString.Count);
                     }
                 }
             }

@@ -7,7 +7,7 @@ namespace DolPicCrawler.HashTag
     {
         private const string CON_IMAGE_URL = "https://twitter.com/hashtag/{0}?f=images&vertical=default";
         private const string CON_IMAGE_MATCH_TAG = "data-url=\"(?<ImageSrc>.*?)\".*?";
-        private const string CON_CAPTION_MATCH_TAG = "data-url=\"(?<ImageSrc>.*?)\".*?";
+        private const string CON_CAPTION_MATCH_TAG = "<div  data-url=\"(?<ImageSrc>.*?)\".*?";
 
         /// <summary>
         /// 해당 사이트에서 이미지 경로 추출

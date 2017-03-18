@@ -56,8 +56,6 @@ namespace DolPicCrawler
             Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             txtLog.AppendText(version.ToString() + Environment.NewLine);
             txtLog.AppendText(Application.StartupPath + Environment.NewLine);
-            var testString = "\uc5b4? \uc798\uc0dd\\uaca8\uc84c\\ub2e4";
-            txtLog.AppendText(CommonUtils.getUnicodeToString(testString.Replace("\\", @"\")));
         }
 
         #region Init
