@@ -66,19 +66,17 @@ namespace DolPicCrawler.Image
                             var caption = CommonUtils.DecodeEncodedNonAsciiCharacters(
                                 CommonUtils.DecodeEncodedNonAsciiCharacters(kvp.Value.listCaptionString[i])
                             );
-                            Console.WriteLine("caption ========== " + caption);
-
 
                             var captionBase64 = CommonUtils.getStringToBase64(caption);
-                            values.Add("cpation", captionBase64);
+                            values.Add("caption", captionBase64);
 
                             Console.WriteLine("caption base64 == " + captionBase64);
                         }
 
                         var content = new FormUrlEncodedContent(values);
-                        var result = await client.PostAsync(image_insert_url, content);
+                        await client.PostAsync(image_insert_url, content);
 
-                        Console.WriteLine("result == " + result.Content.ReadAsStringAsync().Result);
+                        //Console.WriteLine("result == " + result.Content.ReadAsStringAsync().Result);
                     }
                 }
             }

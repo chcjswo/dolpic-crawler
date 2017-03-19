@@ -132,7 +132,6 @@ namespace DolPicCrawler
 
             for (var nTagUrlType = 1; nTagUrlType < 3; nTagUrlType++)
             {
-                if (nTagUrlType == 1) continue;
                 var task = Task<int>.Run(() => ImageProc(nTagUrlType));
 
                 await task.ContinueWith(x => {
