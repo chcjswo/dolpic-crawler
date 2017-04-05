@@ -202,6 +202,7 @@
     <None Include="App.Release.config">
       <DependentUpon>App.config</DependentUpon>
     </None>
+    <None Include="NSIS\install-script.nsi" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
@@ -218,6 +219,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="NSIS\license.txt" />
     <Content Include="twitter.ico" />
   </ItemGroup>
   <ItemGroup>
