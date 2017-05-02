@@ -13,6 +13,8 @@ namespace DolPicCrawler.Image
     {
         private static readonly ImageService _imageService;
         private readonly string image_insert_url = ConfigurationManager.AppSettings["dolpicImageInsertUrl"].ToString();
+        private readonly string slack_notify_url = ConfigurationManager.AppSettings["slackNotifyUrl"].ToString();
+
         /// <summary>
         /// static 초기화
         /// </summary>
@@ -35,7 +37,7 @@ namespace DolPicCrawler.Image
         /// <summary>
         /// 이미지 저장하기
         /// </summary>
-        /// <param name="a_dImage">저장할 이미지 정보/이미지 내용 Dictionary</param>
+        /// <param name="a_dicHashTagData">저장할 이미지 정보/이미지 내용 Dictionary</param>
         /// <param name="a_nTagUrlType">사이트 타입 1:트위터 2:인스타그램 3:페이스북</param>
         public async void ImageSend(
                 Dictionary<string, HashTagQueryData> a_dicHashTagData,
@@ -79,6 +81,24 @@ namespace DolPicCrawler.Image
                         //Console.WriteLine("result == " + result.Content.ReadAsStringAsync().Result);
                     }
                 }
+            }
+        }
+        #endregion
+
+        #region 슬랙 메시지 보내기 호출
+        /// <summary>
+        /// 이미지 저장하기
+        /// </summary>
+        public void SlackNotifyCall()
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var response = httpClient.PostAsync(slack_notify_url,
+                new
+                {
+                }, new JsonMediaTypeFormatter()).Result;
+
+                var contents = response.Content.ReadAsStringAsync().Result;
             }
         }
         #endregion

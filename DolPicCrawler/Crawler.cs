@@ -56,6 +56,8 @@ namespace DolPicCrawler
             Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             txtLog.AppendText(version.ToString() + Environment.NewLine);
             txtLog.AppendText(Application.StartupPath + Environment.NewLine);
+
+            ImageService.getInstance.SlackNotifyCall();
         }
 
         #region Init
