@@ -1,4 +1,5 @@
 ﻿using DolPicCrawler.Utils;
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -66,18 +67,27 @@ namespace DolPicCrawler.HashTag
                 bool isReplace
             )
         {
-            // Dictionary 저장
-            a_dicHashTagData.Add(
-                a_sTagIndex,
-                GetMatchString(
-                    resString,
-                    isReplace,
-                    a_image_tag,
-                    CommonConst.IMAGE_MATCH_STRING,
-                    a_caption_tag,
-                    CommonConst.CAPTION_MATCH_STRING
-                )
-            );
+            Console.WriteLine("index === " + a_sTagIndex);
+            try
+            {
+                // Dictionary 저장
+                a_dicHashTagData.Add(
+                    a_sTagIndex,
+                    GetMatchString(
+                        resString,
+                        isReplace,
+                        a_image_tag,
+                        CommonConst.IMAGE_MATCH_STRING,
+                        a_caption_tag,
+                        CommonConst.CAPTION_MATCH_STRING
+                    )
+                );
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+        
         }
 
         private HashTagQueryData GetMatchString(

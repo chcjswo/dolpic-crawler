@@ -89,16 +89,23 @@ namespace DolPicCrawler.Image
         /// <summary>
         /// 이미지 저장하기
         /// </summary>
-        public void SlackNotifyCall()
+        public void SlackNotifyCall(string time)
         {
             using (var httpClient = new HttpClient())
             {
-                var response = httpClient.PostAsync(slack_notify_url,
-                new
-                {
-                }, new JsonMediaTypeFormatter()).Result;
+                var values = new Dictionary<string, string>();
+                values.Add("time", time);
 
-                var contents = response.Content.ReadAsStringAsync().Result;
+                //var response = httpClient.PostAsync(slack_notify_url,
+                //new
+                //{
+                //}, new JsonMediaTypeFormatter()).Result;
+
+                //var contents = response.Content.ReadAsStringAsync().Result;
+
+                var content = new FormUrlEncodedContent(values);
+                var response = httpClient.PostAsync(slack_notify_url, content).Result;
+                Console.WriteLine(response.Content.ReadAsStringAsync().Result);
             }
         }
         #endregion

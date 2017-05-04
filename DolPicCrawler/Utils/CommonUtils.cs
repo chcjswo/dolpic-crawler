@@ -43,7 +43,8 @@ namespace DolPicCrawler.Utils
                     string encodedValue = "\\u" + ((int)c).ToString("x4");
                     sb.Append(encodedValue);
                 }
-                else {
+                else
+                {
                     sb.Append(c);
                 }
             }
@@ -57,7 +58,8 @@ namespace DolPicCrawler.Utils
                 @"\\u(?<Value>[a-zA-Z0-9]{4})",
                 m => {
                     return ((char)int.Parse(m.Groups["Value"].Value, NumberStyles.HexNumber)).ToString();
-                });
+                }
+            );
         }
 
     }

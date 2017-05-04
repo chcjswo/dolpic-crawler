@@ -24,7 +24,7 @@ namespace DolPicCrawler
         private ErrFrm errfrm;
         private List<string[]> _arrTxt;
 
-        private string[] arrSiteName = { "트위터", "인스타그램", "페이스북" };
+        private string[] arrSiteName = {"", "트위터", "인스타그램", "페이스북" };
 
         /// <summary>
         /// 서버에 전송될 이미지 경로/이미지 내용 Dictionary
@@ -56,8 +56,6 @@ namespace DolPicCrawler
             Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             txtLog.AppendText(version.ToString() + Environment.NewLine);
             txtLog.AppendText(Application.StartupPath + Environment.NewLine);
-
-            ImageService.getInstance.SlackNotifyCall();
         }
 
         #region Init
@@ -119,9 +117,9 @@ namespace DolPicCrawler
         #endregion
 
         /// <summary>
-        /// 이미지 정보 가져오기
+        /// 이미지 정보 크롤링 하고 서버로 보내기
         /// </summary>
-        private async void ImageGet()
+        private async void ImageCrawlingSend()
         {
             txtLog.Clear();
 
@@ -135,6 +133,7 @@ namespace DolPicCrawler
             for (var nTagUrlType = 1; nTagUrlType < 3; nTagUrlType++)
             {
                 var task = Task<int>.Run(() => ImageProc(nTagUrlType));
+                if (nTagUrlType != 2) continue;
 
                 await task.ContinueWith(x => {
                     txtLog.AppendText(Environment.NewLine);
@@ -158,6 +157,9 @@ namespace DolPicCrawler
             sw.Stop();
             toolStripLabel3.Text = "총 걸린 시간 : ";
             toolStripLabel4.Text = (sw.ElapsedMilliseconds / 1000.0F).ToString() + " 초 걸림";
+
+            // 슬랙 메시지 보내기
+            ImageService.getInstance.SlackNotifyCall(toolStripLabel4.Text);
         }
 
         /// <summary>
@@ -294,10 +296,13 @@ namespace DolPicCrawler
 
             try
             {
-                // 이미지 가져오기
-                ImageGet();
+                // 이미지 크롤링 처리
+                ImageCrawlingSend();
 
                 toolStripLabel5.Text = string.Format("{0} 에 체크 완료", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                // 슬랙 메시지 보내기
+                //ImageService.getInstance.SlackNotifyCall(toolStripLabel4.Text);
 
                 // 파일 만들기
                 MakeFile();
@@ -372,8 +377,8 @@ namespace DolPicCrawler
 
             try
             {
-                // 이미지 가져오기
-                ImageGet();
+                // 이미지 크롤링 처리
+                ShowMeTheMoney();
             }
             catch (Exception ex)
             {
