@@ -64,6 +64,7 @@ Section "MainSection" SEC01
   File "Release\log4net.xml"
   File "Release\Newtonsoft.Json.dll"
   File "Release\Newtonsoft.Json.xml"
+  File "Release\System.Net.Http.dll"
   File "Release\System.Net.Http.Extensions.dll"
   File "Release\System.Net.Http.Formatting.dll"
   File "Release\System.Net.Http.Primitives.dll"
